@@ -19,6 +19,9 @@ program: $(SOURCE)/main.c $(LIB)
 $(OBJ_DIR)/element.o: $(HEADER)/element.h $(SOURCE)/element.c
 	$(CC) $(CFLAGS) -I$(HEADER) -c $(SOURCE)/element.c -o $@
 
+$(OBJ_DIR)/planete.o: $(HEADER)/planete.h $(SOURCE)/planete.c
+	$(CC) $(CFLAGS) -I$(HEADER) -c $(SOURCE)/planete.c -o $@
+
 # Création de la bibliothèque statique
 $(LIB): $(OBJ)
 	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
