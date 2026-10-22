@@ -1,96 +1,63 @@
-# Rendu TP 2 - POGRAMMATION C II
+# Planet-Manager — INFO505 Programmation C
 
 ```plaintext
-
 - RATSIMBAZAFY Fitahiana Christalin
-
 - RAKOTOSANDRATANA Iorenantsoa Yohanna
 
 L3 INFO - Groupe 2B
-
 ```
 
 ## Description
 
-On a créé deux listes chaînées différentes  :
+Jeu de gestion d'une planète dans le terminal : à chaque tour un événement
+climatique aléatoire survient, puis le joueur choisit une action écologique.
+La planète est perdue si la pollution atteint 1000 ou si les ressources
+tombent à 0 ; elle est sauvée si elle tient 10 tours.
 
-- Liste générique (Liste) : stocke des valeurs de types quelconques grâce à void * et à une copie des données en mémoire.
-- Liste d'éléments (Element) : stocke des éléments possédant un nom, un type et un pointeur vers l'élément suivant. (Selon le TP)
+La planète est dessinée en **pixel art** (couleurs 24 bits) : océans, forêts,
+savanes, déserts, glaciers, nuages, smog et incendies évoluent selon la
+pollution, les ressources et l'événement du tour.
 
+## Commandes
+
+| Touche | Effet |
+|:--|:--|
+| ↑ / ↓ (ou ← / →) | Déplacer la sélection |
+| Entrée / Espace | Valider |
+| 1 à 9 | Choisir directement l'option |
+| q / Echap | Quitter (avec confirmation en cours de partie) |
+
+Chaque action affiche son coût en énergie et son effet prévu
+(vert = bon pour la planète, rouge = mauvais). Une action trop chère
+apparaît en gris et ne peut pas être choisie.
 
 ## Structure du projet
 
 ```plaintext
-projet/
-├── include/
-│   ├── linked_list.h
-│   └── element.h
-├── src/
-│   ├── linked_list.c
-│   ├── element.c
-│   └── main.c
-├── obj/
-├── libs/
-├── Makefile
-└── README.md
-
+include/                 src/
+├── element.h            ├── element.c    Liste chaînée (→ libs/libElements.a)
+├── planete.h            ├── planete.c    Structure Planete
+├── action.h             ├── action.c     Actions + coûts (pointeurs de fonctions)
+├── evenement.h          ├── evenement.c  Evénements climatiques
+├── jeu.h                ├── jeu.c        Tours de jeu, stratégies de score
+├── terminal.h           ├── terminal.c   Mode brut du terminal, lecture des flèches
+├── ui.h                 ├── ui.c         Menus colorés
+├── carte.h              ├── carte.c      Pixel art de la planète + tableau de bord
+└── color.h              └── main.c       Menu principal et tests unitaires
 ```
 
-## Fonctionnalités
-
-**Liste générique (linked_list)**
-
-|Fonction|Description|
-|:-------------|:-----------:|
-|create_node()|Crée un nœud contenant une copie d'une valeur.|
-|add_first()|Ajoute un élément au début.|
-|add_last()|Ajoute un élément à la fin.|
-|remove_first()|Supprime le premier élément.|
-|remove_last()|Supprime le dernier élément.|
-|affiche_list()|Affiche la liste avec une fonction de rappel.|
-|free_node()|Libère la mémoire de la valeur d'un nœud.|
-
-**Liste d'éléments (element)**
-
-|Fonction|Description|
-|:-------------|:-----------:|
-|creerNoeud()|Crée un nouvel élément.|
-|ajouterElement()|Ajoute un élément au début.|
-|ajouterElementTail()|Ajoute un élément à la fin.|
-|supprimerElement()|Supprime un élément à partir de son nom.|
-|afficherElements()|Affiche les noms et les types des éléments.|
-|libererListeElements()|Libère tous les nœuds de la liste.|
-
-
-**Compilation et exécution**
-
-**Makefile**
-
-Le Makefile automatise la compilation du projet et la création d'une bibliothèque statique nommée liblinked_list.a.
-
-Les fichiers sources sont d'abord compilés en fichiers objets (.o), puis regroupés dans la bibliothèque à l'aide de la commande ar. Cette bibliothèque contient les implémentations des listes chaînées et permet de les réutiliser dans d'autres programmes sans avoir à recompiler directement tous les fichiers sources.
-
-Lors de la compilation de l'exécutable, le compilateur GCC utilise cette bibliothèque pour résoudre les fonctions appelées par le programme principal.
-
-**Commandes disponibles**
-
-make : compile le projet et génère l'exécutable program.
-make clean : supprime les fichiers objets, la bibliothèque statique et l'exécutable généré.
-
-**Compilation et linkage**
+## Compilation et exécution
 
 ```bash
-make
-```
-
-**Exécuter le programme :**
-
-```bash
-./program
-```
-
-**Nettoyer les fichiers générés :**
-
-```bash
+make                 # compile la bibliothèque libElements.a puis le programme
+make MODE=debug      # version debug (-g, -DDEBUG)
+make doc             # documentation Doxygen dans doc/
 make clean
+
+./program            # menu principal (jouer, démos, tests)
+./program --test     # tests unitaires uniquement
+./program --auto     # partie automatique en mode texte
 ```
+
+Le terminal doit gérer les couleurs 24 bits (terminal GNOME, Konsole,
+VS Code...) et faire au moins 110 colonnes sur 32 lignes.

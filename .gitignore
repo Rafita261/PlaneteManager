@@ -2,4 +2,7 @@
 *.o
 **.a
 *.a
-*.pdf
+*.pdfprogram
+obj/
+libs/
+doc/

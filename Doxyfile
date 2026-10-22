@@ -1,0 +1,7 @@
+PROJECT_NAME   = "Planet-Manager"
+INPUT          = ./src ./include
+OUTPUT_DIRECTORY = ./doc
+GENERATE_HTML  = YES
+GENERATE_LATEX = NO
+HAVE_DOT       = YES
+EXTRACT_STATIC = YES

@@ -1,26 +1,26 @@
+/**
+ * @file action.h
+ * @brief Actions écologiques et leurs effets sur une Planete.
+ */
 #ifndef _ACTION_H_
-
 #define _ACTION_H_
 
-#include "../include/planete.h"
-#include "../include/element.h"
+#include "planete.h"
 
-#define PLANTER_ARBRE 0
-#define TRANSITION_ECOLOGIQUE 1
-#define REDUCTION_DECHETS 2
+#define PLANTER_ARBRE "Planter des arbres"
+#define TRANSITION_ENERGETIQUE "Transition énergétique"
+#define REDUCTION_DECHETS "Réduction des déchets"
+#define RECHARGER_ENERGIE "Recharger l'énergie"
 
-typedef void(*action)(Planete*) ;
+/** @brief Pointeur vers une fonction d'effet sur une planète. */
+typedef void (*effet)(Planete*);
 
-Element actionToElement(char*) ;
+void planter_arbre(Planete* p);
+void transition_energetique(Planete* p);
+void reduction_dechets(Planete* p);
+void recharger_energie(Planete* p);
 
-void planter_arbre(Planete* p) ;
-void transition_ecologique(Planete* p) ;
-void reduction_dechets(Planete* p) ;
-
-const action action_functions = {
-    planter_arbre,
-    transition_ecologique,
-    reduction_dechets
-}
+effet trouverAction(const char* nomAction);
+int energieRequise(const char* nomAction);
 
 #endif

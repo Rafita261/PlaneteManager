@@ -15,5 +15,6 @@
 
 #define GRAS    "\033[1m"
 #define SOULIGNE "\033[4m"
+#define DIM     "\033[2m"
 
 #endif

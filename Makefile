@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Werror
+CFLAGS = -Wall -Wextra -Werror -std=c99
 AR = ar
 ARFLAGS = rcs
 
@@ -8,23 +8,40 @@ OBJ_DIR = obj
 SOURCE = src
 HEADER = include
 
-LIB = $(LIBS_DIR)/libelement.a
-OBJ = $(OBJ_DIR)/element.o
+# make MODE=debug pour compiler avec les symboles de debug
+MODE ?= release
+ifeq ($(MODE),debug)
+    CFLAGS += -g -O0 -DDEBUG
+else
+    CFLAGS += -O2
+endif
+
+LIB = $(LIBS_DIR)/libElements.a
+LIB_OBJ = $(OBJ_DIR)/element.o
+GAME_OBJ = $(OBJ_DIR)/planete.o $(OBJ_DIR)/action.o $(OBJ_DIR)/evenement.o $(OBJ_DIR)/jeu.o \
+           $(OBJ_DIR)/terminal.o $(OBJ_DIR)/ui.o $(OBJ_DIR)/carte.o $(OBJ_DIR)/main.o
+
+.PHONY: all clean doc
+
+all: program
 
 # Programme principal
-program: $(SOURCE)/main.c $(LIB)
-	$(CC) $(CFLAGS) $(SOURCE)/main.c -I$(HEADER) -L$(LIBS_DIR) -lelement -o program
+program: $(GAME_OBJ) $(LIB)
+	$(CC) $(CFLAGS) $(GAME_OBJ) -L$(LIBS_DIR) -lElements -lm -o $@
 
-# Création de l'objet element
-$(OBJ_DIR)/element.o: $(HEADER)/element.h $(SOURCE)/element.c
-	$(CC) $(CFLAGS) -I$(HEADER) -c $(SOURCE)/element.c -o $@
-
-$(OBJ_DIR)/planete.o: $(HEADER)/planete.h $(SOURCE)/planete.c
-	$(CC) $(CFLAGS) -I$(HEADER) -c $(SOURCE)/planete.c -o $@
+# Compilation générique des objets (dépendances sur tous les headers)
+$(OBJ_DIR)/%.o: $(SOURCE)/%.c $(wildcard $(HEADER)/*.h) | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -I$(HEADER) -c $< -o $@
 
 # Création de la bibliothèque statique
-$(LIB): $(OBJ)
-	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
+$(LIB): $(LIB_OBJ) | $(LIBS_DIR)
+	$(AR) $(ARFLAGS) $@ $^
+
+$(OBJ_DIR) $(LIBS_DIR):
+	mkdir -p $@
+
+doc:
+	doxygen Doxyfile
 
 # Nettoyage des fichiers générés
 clean:

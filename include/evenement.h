@@ -1,27 +1,24 @@
+/**
+ * @file evenement.h
+ * @brief Evénements climatiques et leurs effets sur une Planete.
+ */
 #ifndef _EVENEMENT_H_
-
 #define _EVENEMENT_H_
-#include "../include/planete.h"
 
-#define INCENDIE 0
-#define TEMPETE 1
-#define SECHERESSE 2
-#define PLUIE 3
+#include "action.h"  /* type effet */
 
-typedef void(*evenement)(Planete*) ;
-Element evenementToElement(char* nomEvent) ;
+#define INCENDIE "Incendie"
+#define TEMPETE "Tempête"
+#define SECHERESSE "Sécheresse"
+#define PLUIE "Pluies abondantes"
+#define RAS "RAS"
 
-void incendie(Planete* p) ;
+void incendie(Planete* p);
 void tempete(Planete* p);
 void secheresse(Planete* p);
-void pluie_abondantes(Planete* p)
+void pluies_abondantes(Planete* p);
+void ras(Planete* p);
 
-const evenement aevenement_functions = {
-    incendie,
-    tempete,
-    secheresse,
-    pluie_abontantes
-}
-
+effet trouverEvenement(const char* nomEvenement);
 
 #endif
