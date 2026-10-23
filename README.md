@@ -23,10 +23,10 @@ On a créé deux listes chaînées différentes  :
 ```plaintext
 projet/
 ├── include/
-│   ├── linked_list.h
+│   ├── planete.h
 │   └── element.h
 ├── src/
-│   ├── linked_list.c
+│   ├── planete.c
 │   ├── element.c
 │   └── main.c
 ├── obj/
@@ -37,18 +37,6 @@ projet/
 ```
 
 ## Fonctionnalités
-
-**Liste générique (linked_list)**
-
-|Fonction|Description|
-|:-------------|:-----------:|
-|create_node()|Crée un nœud contenant une copie d'une valeur.|
-|add_first()|Ajoute un élément au début.|
-|add_last()|Ajoute un élément à la fin.|
-|remove_first()|Supprime le premier élément.|
-|remove_last()|Supprime le dernier élément.|
-|affiche_list()|Affiche la liste avec une fonction de rappel.|
-|free_node()|Libère la mémoire de la valeur d'un nœud.|
 
 **Liste d'éléments (element)**
 

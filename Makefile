@@ -9,19 +9,22 @@ SOURCE = src
 HEADER = include
 
 LIB = $(LIBS_DIR)/libelement.a
-OBJ = $(OBJ_DIR)/element.o
+SOURCES = $(wildcard $(SOURCE)/*.c)
+OBJECTS = $(patsubst $(SOURCE)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
+LIB_OBJ = $(OBJ_DIR)/element.o
+PROGRAM_OBJ = $(filter-out $(LIB_OBJ),$(OBJECTS))
 
 # Programme principal
-program: $(SOURCE)/main.c $(LIB)
-	$(CC) $(CFLAGS) $(SOURCE)/main.c -I$(HEADER) -L$(LIBS_DIR) -lelement -o program
+program: $(PROGRAM_OBJ) $(LIB)
+	$(CC) $(CFLAGS) -I$(HEADER) $^ -o $@
 
-# Création de l'objet element
-$(OBJ_DIR)/element.o: $(HEADER)/element.h $(SOURCE)/element.c
-	$(CC) $(CFLAGS) -I$(HEADER) -c $(SOURCE)/element.c -o $@
+# Création des objets
+$(OBJ_DIR)/%.o: $(SOURCE)/%.c
+	$(CC) $(CFLAGS) -I$(HEADER) -c $< -o $@
 
 # Création de la bibliothèque statique
-$(LIB): $(OBJ)
-	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
+$(LIB): $(LIB_OBJ)
+	$(AR) $(ARFLAGS) $@ $^
 
 # Nettoyage des fichiers générés
 clean:
